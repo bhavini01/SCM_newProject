@@ -151,3 +151,100 @@ void amount::report()
         cout<<"NET AMOUNT";
     }
 }
+void amount::pay()
+{
+    show();
+    cout<<"\n\n\n\t\t*********************************************";
+    cout<<"\n\t\t                 DETAILS                  ";
+    cout<<"\n\t\t*********************************************";
+    cout<<"\n\n\t\tPRICE                     :"<<price;
+    cout<<"\n\n\t\tQUANTITY                  :"<<qty;
+    cout<<"\n\t\tTAX PERCENTAGE              :"<<tax;
+    cout<<"\n\t\tDISCOUNT PERCENTAGE         :"<<dis;
+    cout<<"\n\n\n\t\tNET AMOUNT              :Rs."<<netamt;
+    cout<<"\n\t\t*********************************************";
+}
+
+int main()
+{
+    cout.setf(ios::fixed);
+    cout.setf(ios::showpoint);
+    cout<<setprecision(2);
+    fstream tmp("temp.dat",ios::binary|ios::out);
+menu:
+    system("cls");
+    gotoxy(25,2);
+    cout<<"Super Market Billing ";
+    gotoxy(25,3);
+    cout<<"===========================\n\n";
+    cout<<"\n\t\t1.Bill Report\n\n";
+    cout<<"\t\t2.Add/Remove/Edit Item\n\n";
+    cout<<"\t\t3.Show Item Details\n\n";
+    cout<<"\t\t4.Exit\n\n";
+    cout<<"\t\tPlease Enter Required Option: ";
+    int ch,ff;
+    float gtotal;
+    cin>>ch;
+    switch(ch)
+    {
+    case 1:
+ss:
+        system("cls");
+        gotoxy(25,2);
+        cout<<"Bill Details";
+        gotoxy(25,3);
+        cout<<"================\n\n";
+        cout<<"\n\t\t1.All Items\n\n";
+        cout<<"\t\t2.Back to Main menu\n\n";
+        cout<<"\t\tPlease Enter Required Option: ";
+        int cho;
+        cin>>cho;
+        if(cho==1)
+        {
+            system("cls");
+            gotoxy(30,3);
+            cout<<" BILL DETAILS ";
+            gotoxy(3,5);
+            cout<<"ITEM NO";
+            gotoxy(13,5);
+            cout<<"NAME";
+            gotoxy(23,5);
+            cout<<"PRICE";
+            gotoxy(33,5);
+            cout<<"QUANTITY";
+            gotoxy(44,5);
+            cout<<"TAX %";
+            gotoxy(52,5);
+            cout<<"DISCOUNT %";
+            gotoxy(64,5);
+            cout<<"NET AMOUNT";
+            fin.open("itemstore.dat",ios::binary);
+            if(!fin)
+            {
+                cout<<"\n\nFile Not Found...";
+                goto menu;
+            }
+            fin.seekg(0);
+            gtotal=0;
+            while(!fin.eof())
+            {
+                fin.read((char*)&amt,sizeof(amt));
+                if(!fin.eof())
+                {
+                    amt.report();
+                    gtotal+=amt.retnetamt();
+                    ff=0;
+                }
+                if(ff!=0) gtotal=0;
+            }
+            gotoxy(17,k);
+            cout<<"\n\n\n\t\t\tGrand Total="<<gtotal;
+            getch();
+            fin.close();
+        }
+        if(cho==2)
+        {
+            goto menu;
+        }
+        goto ss;
+	    
